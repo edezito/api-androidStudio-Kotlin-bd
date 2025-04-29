@@ -1,0 +1,12 @@
+[33m29f43dc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33mc4dbb75[m HEAD@{1}: reset: moving to c4dbb75
+[33m6459c80[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{2}: commit (merge): merge
+[33mc4dbb75[m HEAD@{3}: commit: finalizando crud
+[33m29f43dc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m HEAD@{4}: checkout: moving from 2c895d06ed0203c0389a1f7bef6fc7e59c2eccf2 to master
+[33m2c895d0[m[33m ([m[1;31morigin/detached[m[33m)[m HEAD@{5}: commit (amend): corrigindo erro
+[33ma2ab403[m HEAD@{6}: commit (amend): corrigindo erro
+[33m856b769[m HEAD@{7}: commit: corrigindo erro
+[33mff92643[m HEAD@{8}: checkout: moving from master to ff92643
+[33m29f43dc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m HEAD@{9}: reset: moving to HEAD
+[33m29f43dc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m HEAD@{10}: commit: Salvando alterações locais antes de pull
+[33mb4bf6df[m HEAD@{11}: clone: from https://github.com/edezito/api-androidStudio-Kotlin-bd.git
