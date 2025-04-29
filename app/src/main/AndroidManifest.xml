@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="br.com.estudos.ap1">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Permissão para acessar a internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Permissão para leitura de armazenamento (se necessário) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,28 +21,39 @@
         tools:targetApi="34"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <!-- Activity principal -->
-        <activity
-            android:name=".ListaUsuariosActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+    <!-- Activity principal -->
+    <activity
+        android:name=".ListaUsuariosActivity"
+        android:exported="true"
+        android:screenOrientation="portrait"
+        android:windowSoftInputMode="adjustResize">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
 
-        <!-- Activity para calcular IMC -->
-        <activity
-            android:name=".CalcularIMCActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ListaUsuariosActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.com.estudos.ap1.ListaUsuariosActivity" />
-        </activity>
-    </application>
+    <!-- Activity para calcular IMC -->
+    <activity
+        android:name=".CalcularIMCActivity"
+        android:exported="true"
+        android:screenOrientation="portrait"
+        android:parentActivityName=".ListaUsuariosActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="br.com.estudos.ap1.ListaUsuariosActivity" />
+    </activity>
 
-</manifest>
+    <!-- Activity para editar usuário -->
+    <activity
+        android:name=".EditarUsuarioActivity"
+        android:exported="true"
+        android:screenOrientation="portrait"
+        android:parentActivityName=".ListaUsuariosActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="br.com.estudos.ap1.ListaUsuariosActivity" />
+    </activity>
+
+</application>
+    </manifest>

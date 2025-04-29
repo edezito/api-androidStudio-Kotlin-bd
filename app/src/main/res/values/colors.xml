@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Cores principais -->
     <color name="black">#121212</color>
     <color name="white">#FFFFFF</color>
 
+    <!-- Cores de destaque -->
     <color name="primary_blue">#0077B6</color>
     <color name="secondary_blue">#0096C7</color>
     <color name="accent_blue">#00B4D8</color>
 
+    <!-- Fundo -->
     <color name="background_blue">#F0F7FF</color>
 
+    <!-- Cores de texto -->
     <color name="text_primary">#1A1A1A</color>
     <color name="text_secondary">#7D8D9C</color>
+
+    <!-- Novas cores -->
+    <color name="colorPrimary">#2196F3</color> <!-- Azul primário mais moderno -->
+    <color name="colorPrimaryDark">#1976D2</color> <!-- Azul mais escuro para a barra de status -->
+    <color name="colorAccent">#FF4081</color> <!-- Cor de destaque para botões e ícones -->
+    <color name="background_light">#F5F5F5</color> <!-- Fundo mais claro para contrastar com o azul -->
+    <color name="text_muted">#B0B0B0</color> <!-- Texto mais suave para descritivos ou textos secundários -->
 </resources>

@@ -9,10 +9,12 @@ import java.math.BigDecimal
 @Parcelize
 @Entity(tableName = "usuario_imc")
 data class UsuarioIMC(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val nome: String,
-    val altura: BigDecimal,
-    val peso: BigDecimal,
-    val imc: BigDecimal,
-    val imagem: String? = null
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0L,
+
+    var nome: String = "",
+    var altura: BigDecimal = BigDecimal.ZERO,
+    var peso: BigDecimal = BigDecimal.ZERO,
+    var imc: BigDecimal = BigDecimal.ZERO,
+    var imagem: String? = null
 ) : Parcelable

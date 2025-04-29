@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="16dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLine"
@@ -18,6 +18,7 @@
             app:layout_constraintGuide_percent="0.3"
             android:layout_height="wrap_content" />
 
+        <!-- Imagem do Usuário -->
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
@@ -27,8 +28,9 @@
             app:layout_constraintEnd_toStartOf="@+id/guideLine"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
+        <!-- Nome do Usuário -->
         <TextView
             android:id="@+id/usuarioName"
             android:layout_width="0dp"
@@ -42,8 +44,9 @@
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toEndOf="@id/imageView"
             app:layout_constraintTop_toTopOf="@id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Altura do Usuário -->
         <TextView
             android:id="@+id/usuarioAltura"
             android:layout_width="0dp"
@@ -54,8 +57,9 @@
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/usuarioName"
             app:layout_constraintTop_toBottomOf="@id/usuarioName"
-            app:layout_constraintEnd_toEndOf="@id/usuarioName"/>
+            app:layout_constraintEnd_toEndOf="@id/usuarioName" />
 
+        <!-- Peso do Usuário -->
         <TextView
             android:id="@+id/usuarioPeso"
             android:layout_width="0dp"
@@ -66,8 +70,9 @@
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/usuarioAltura"
             app:layout_constraintTop_toBottomOf="@id/usuarioAltura"
-            app:layout_constraintEnd_toEndOf="@id/usuarioAltura"/>
+            app:layout_constraintEnd_toEndOf="@id/usuarioAltura" />
 
+        <!-- IMC do Usuário -->
         <TextView
             android:id="@+id/usuarioIMC"
             android:layout_width="0dp"
@@ -78,8 +83,9 @@
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/usuarioPeso"
             app:layout_constraintTop_toBottomOf="@id/usuarioPeso"
-            app:layout_constraintEnd_toEndOf="@id/usuarioPeso"/>
+            app:layout_constraintEnd_toEndOf="@id/usuarioPeso" />
 
+        <!-- Classificação do Usuário -->
         <TextView
             android:id="@+id/usuarioClassificacao"
             android:layout_width="0dp"
@@ -92,7 +98,47 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintStart_toStartOf="@id/usuarioIMC"
             app:layout_constraintTop_toBottomOf="@id/usuarioIMC"
-            app:layout_constraintEnd_toEndOf="@id/usuarioIMC"/>
+            app:layout_constraintEnd_toEndOf="@id/usuarioIMC" />
+
+        <!-- Botões -->
+        <LinearLayout
+            android:id="@+id/buttonsLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/usuarioClassificacao">
+
+            <!-- Botão de Editar -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/editarbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Editar"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/primary_blue"
+                android:layout_marginEnd="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+
+            <!-- Botão de Excluir -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/excluirbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Excluir"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/accent_blue"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -10,17 +10,9 @@ interface UsuariosDao {
     @Query("SELECT * FROM usuario_imc")
     suspend fun buscaTodos(): List<UsuarioIMC>
 
-    // Inserir um novo usuário
-    @Insert
-    suspend fun adiciona(usuarioIMC: UsuarioIMC)
-
-    // Salvar ou atualizar
+    // Inserir ou atualizar um usuário (substitui caso já exista)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun salvar(usuarioIMC: UsuarioIMC)
-
-    // Atualizar informações
-    @Update
-    suspend fun atualizar(usuarioIMC: UsuarioIMC)
 
     // Remover usuário
     @Delete
@@ -29,4 +21,12 @@ interface UsuariosDao {
     // Buscar usuário pelo nome
     @Query("SELECT * FROM usuario_imc WHERE nome = :nome LIMIT 1")
     suspend fun buscaPorNome(nome: String): UsuarioIMC?
+
+    // Buscar usuário pelo ID
+    @Query("SELECT * FROM usuario_imc WHERE id = :id LIMIT 1")
+    suspend fun buscaPorId(id: Int): UsuarioIMC?
+
+    // Atualizar usuário
+    @Update
+    suspend fun atualizar(usuarioIMC: UsuarioIMC)
 }

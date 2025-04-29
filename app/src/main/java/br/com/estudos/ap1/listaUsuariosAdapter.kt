@@ -1,6 +1,7 @@
 package br.com.estudos.ap1
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.estudos.ap1.databinding.UsuarioImcBinding
 import br.com.estudos.ap1.model.UsuarioIMC
 import coil.load
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
+import br.com.estudos.ap1.model.AppDatabase
+import kotlinx.coroutines.launch
 
 class ListaUsuariosAdapter(
     private val context: Context,
-    imc: List<UsuarioIMC>,
-    var quandoClicaNoItem: (usuario: UsuarioIMC) -> Unit = {}
+    private var imc: List<UsuarioIMC>,
+    var quandoClicaNoItem: (usuario: UsuarioIMC) -> Unit = {},
+    var onSalvarUsuario: (usuario: UsuarioIMC) -> Unit = {},
+    var onExcluirUsuario: (usuario: UsuarioIMC) -> Unit = {}
 ) : RecyclerView.Adapter<ListaUsuariosAdapter.ViewHolder>() {
-
-    private val imc = imc.toMutableList()
 
     inner class ViewHolder(private val binding: UsuarioImcBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -25,7 +30,24 @@ class ListaUsuariosAdapter(
         init {
             itemView.setOnClickListener {
                 if (::usuarioIMC.isInitialized) {
+                    Log.d("ListaUsuariosAdapter", "Item Clicado: ${usuarioIMC.nome}")
                     quandoClicaNoItem(usuarioIMC)
+                }
+            }
+
+            // Configura o clique para o botão de salvar
+            binding.editarbtn.setOnClickListener {
+                if (::usuarioIMC.isInitialized) {
+                    Log.d("ListaUsuariosAdapter", "Botão Editar Clicado: ${usuarioIMC.nome}")
+                    onSalvarUsuario(usuarioIMC) // Passa para a Activity/Fragment
+                }
+            }
+
+            // Configura o clique para o botão de excluir
+            binding.excluirbtn.setOnClickListener {
+                if (::usuarioIMC.isInitialized) {
+                    Log.d("ListaUsuariosAdapter", "Botão Excluir Clicado: ${usuarioIMC.nome}")
+                    onExcluirUsuario(usuarioIMC) // Passa para a Activity/Fragment
                 }
             }
         }
@@ -63,16 +85,14 @@ class ListaUsuariosAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val imc = imc[position]
-        holder.vincula(imc)
+        val usuarioIMC = imc[position]
+        holder.vincula(usuarioIMC)
     }
 
     override fun getItemCount(): Int = imc.size
 
     fun atualiza(imc: List<UsuarioIMC>) {
-        this.imc.clear()
-        this.imc.addAll(imc)
+        this.imc = imc
         notifyDataSetChanged()
-
     }
 }

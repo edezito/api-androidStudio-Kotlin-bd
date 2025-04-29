@@ -46,6 +46,10 @@ android {
 dependencies {
     val roomVersion = "2.6.1"
 
+    // Dependências principais
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+    implementation("com.google.android.material:material:1.9.0")
+
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
