@@ -11,7 +11,7 @@ import java.math.BigDecimal
 
 class UsuarioAdapter(
     private val context: Context,
-    private var usuarioIMCS: MutableList<UsuarioIMC>,  // A lista agora é mutável
+    private var usuarioIMCS: MutableList<UsuarioIMC>,
     private val onEditarClick: (UsuarioIMC) -> Unit,
     private val onDeletarClick: (UsuarioIMC) -> Unit
 ) : RecyclerView.Adapter<UsuarioAdapter.UsuarioViewHolder>() {
@@ -26,19 +26,18 @@ class UsuarioAdapter(
             binding.usuarioIMC.text = "IMC: ${usuarioIMC.imc.setScale(2)}"
             binding.usuarioClassificacao.text = "Classificação: ${classificarIMC(usuarioIMC.imc)}"
 
-            // Carrega a imagem, com fallback e erro definidos
+            // Carrega a imagem com Coil
             binding.imageView.load(usuarioIMC.img) {
                 fallback(R.drawable.erro)
                 error(R.drawable.erro)
             }
 
-            // Configura os botões de ação
+            // Configura ações de editar e deletar
             binding.buttonEditar.setOnClickListener {
-                onEditarClick(usuarioIMC)  // Chama a função de editar
+                onEditarClick(usuarioIMC)
             }
-
             binding.buttonDeletar.setOnClickListener {
-                onDeletarClick(usuarioIMC)  // Chama a função de deletar
+                onDeletarClick(usuarioIMC)
             }
         }
 
@@ -54,28 +53,21 @@ class UsuarioAdapter(
         }
     }
 
-    // Cria o ViewHolder e infla o layout
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsuarioViewHolder {
-        val binding = UsuarioImcBinding.inflate(
-            LayoutInflater.from(context),
-            parent,
-            false
-        )
+        val binding = UsuarioImcBinding.inflate(LayoutInflater.from(context), parent, false)
         return UsuarioViewHolder(binding)
     }
 
-    // Vincula os dados do usuário ao item da lista
     override fun onBindViewHolder(holder: UsuarioViewHolder, position: Int) {
-        holder.vincula(usuarioIMCS[position])
+        val usuario = usuarioIMCS[position]
+        holder.vincula(usuario)
     }
 
-    // Retorna o número total de itens na lista
-    override fun getItemCount() = usuarioIMCS.size
+    override fun getItemCount(): Int = usuarioIMCS.size
 
-    // Função para atualizar a lista de usuários no adapter
+    // Atualiza os dados de forma mais eficiente
     fun atualizarUsuario(novaLista: List<UsuarioIMC>) {
-        usuarioIMCS.clear()  // Limpa a lista antiga
-        usuarioIMCS.addAll(novaLista)  // Adiciona todos os novos itens
-        notifyDataSetChanged()  // Notifica o RecyclerView de que os dados mudaram
+        usuarioIMCS = novaLista.toMutableList()
+        notifyDataSetChanged()
     }
 }

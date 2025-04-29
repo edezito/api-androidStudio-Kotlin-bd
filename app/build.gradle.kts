@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt") // Adicionado para o Room funcionar corretamente
 }
 
 android {
@@ -37,7 +38,7 @@ android {
         jvmTarget = "11"
     }
 
-    // ATIVAÇÃO DO VIEW BINDING (NOVA SEÇÃO ADICIONADA)
+    // ViewBinding
     buildFeatures {
         viewBinding = true
     }
@@ -51,7 +52,14 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
+    // Coil (carregamento de imagens)
+    implementation("io.coil-kt:coil:1.2.2")
+    implementation("com.google.android.material:material:1.9.0")
 
-    implementation ("io.coil-kt:coil:1.2.2")
-    implementation ("com.google.android.material:material:1.9.0")
+    // ROOM (Adicionados)
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    // Opcional - extensões do Room para corrotinas e LiveData
+    implementation("androidx.room:room-ktx:2.6.1")
 }

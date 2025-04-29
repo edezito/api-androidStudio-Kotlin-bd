@@ -1,35 +1,20 @@
-package br.com.estudos.ap1.dao
+package br.com.estudos.ap1.database.dao
 
+import androidx.room.*
 import br.com.estudos.ap1.model.UsuarioIMC
 
-class UsuariosIMCDao {
+@Dao
+interface UsuariosDao {
 
-    private val usuarioIMCS = mutableListOf<UsuarioIMC>()
+    @Insert
+    fun salvar(usuario: UsuarioIMC)
 
-    fun buscaTodos(): List<UsuarioIMC> {
-        return usuarioIMCS.toList()
-    }
+    @Query("SELECT * FROM usuarios")
+    fun buscarTodos(): List<UsuarioIMC>
 
-    fun salvar(usuarioIMC: UsuarioIMC) {
-        usuarioIMCS.add(usuarioIMC)
-    }
+    @Delete
+    fun deletar(usuario: UsuarioIMC)
 
-    fun atualizar(usuarioIMC: UsuarioIMC): Boolean {
-        val index = usuarioIMCS.indexOfFirst { it.nome == usuarioIMC.nome }
-        return if (index != -1) {
-            usuarioIMCS[index] = usuarioIMC
-            true
-        } else {
-            false
-        }
-    }
-
-    fun remover(usuarioIMC: UsuarioIMC): Boolean {
-        return usuarioIMCS.remove(usuarioIMC)
-    }
-
-    fun buscaPorNome(nome: String): UsuarioIMC? {
-        return usuarioIMCS.find { it.nome == nome }
-    }
-
+    @Update
+    fun atualizar(usuario: UsuarioIMC)
 }

@@ -3,18 +3,25 @@ package br.com.estudos.ap1
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import br.com.estudos.ap1.dao.UsuariosIMCDao
+import androidx.lifecycle.lifecycleScope
+import br.com.estudos.ap1.database.AppDatabase
 import br.com.estudos.ap1.databinding.ActivityEditarUsuarioBinding
+import br.com.estudos.ap1.model.UsuarioIMC
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
 class EditarUsuarioActivity : AppCompatActivity() {
 
-    private val dao = UsuariosIMCDao()
     private val binding by lazy {
         ActivityEditarUsuarioBinding.inflate(layoutInflater)
     }
 
     private var usuarioOriginalNome: String? = null
+    private val usuarioDao by lazy {
+        AppDatabase.instancia(this).usuarioIMCDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,22 +54,26 @@ class EditarUsuarioActivity : AppCompatActivity() {
             return
         }
 
-        val novoUsuario = br.com.estudos.ap1.model.UsuarioIMC(
+        val novoUsuario = UsuarioIMC(
             nome = nome,
             altura = altura,
             peso = peso,
             imc = imc
         )
 
-        usuarioOriginalNome?.let { nomeOriginal ->
-            val usuarioExistente = dao.buscaPorNome(nomeOriginal)
-            if (usuarioExistente != null) {
-                dao.remover(usuarioExistente)
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                usuarioOriginalNome?.let { nomeOriginal ->
+                    val usuarioExistente = usuarioDao.buscaPorNome(nomeOriginal)
+                    if (usuarioExistente != null) {
+                        usuarioDao.remover(usuarioExistente)
+                    }
+                }
+                usuarioDao.salvar(novoUsuario)
             }
-        }
 
-        dao.salvar(novoUsuario)
-        Toast.makeText(this, "Usuário atualizado com sucesso!", Toast.LENGTH_SHORT).show()
-        finish()
+            Toast.makeText(this@EditarUsuarioActivity, "Usuário atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+            finish()
+        }
     }
 }
