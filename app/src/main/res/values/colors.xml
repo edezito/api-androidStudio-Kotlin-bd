@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Cores básicas -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Tons de azul -->
     <color name="primary_blue">#3A73D9</color>
     <color name="secondary_blue">#1E4DB7</color>
     <color name="background_blue">#E6F0FF</color>
     <color name="accent_blue">#90C2FF</color>
+
+    <!-- Texto -->
     <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#D1E3FF</color>
+
+    <!-- Cores adicionadas -->
+    <color name="purple_500">#6200EE</color> <!-- Cor para o botão "Editar" -->
+    <color name="holo_red_dark">#B00020</color> <!-- Cor do botão "Deletar" (padrão Android) -->
+    <color name="holo_green_dark">#388E3C</color> <!-- Cor para "Classificação" -->
 </resources>

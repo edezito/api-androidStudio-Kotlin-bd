@@ -4,30 +4,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="8dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@android:color/darker_gray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="16dp">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine"
+            android:id="@+id/guideline"
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.3"
-            android:layout_height="wrap_content" />
+            app:layout_constraintGuide_percent="0.3" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/avatar"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/usuarioName"
@@ -35,14 +41,14 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
             android:text="Nome"
-            android:ellipsize="end"
-            android:maxLines="1"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginBottom="4dp"
             app:layout_constraintStart_toEndOf="@id/imageView"
             app:layout_constraintTop_toTopOf="@id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/usuarioAltura"
@@ -54,7 +60,7 @@
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/usuarioName"
             app:layout_constraintTop_toBottomOf="@id/usuarioName"
-            app:layout_constraintEnd_toEndOf="@id/usuarioName"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/usuarioPeso"
@@ -66,7 +72,7 @@
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/usuarioAltura"
             app:layout_constraintTop_toBottomOf="@id/usuarioAltura"
-            app:layout_constraintEnd_toEndOf="@id/usuarioAltura"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/usuarioIMC"
@@ -78,7 +84,7 @@
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="@id/usuarioPeso"
             app:layout_constraintTop_toBottomOf="@id/usuarioPeso"
-            app:layout_constraintEnd_toEndOf="@id/usuarioPeso"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/usuarioClassificacao"
@@ -86,13 +92,36 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:text="Classificação: Peso normal"
-            android:textSize="14sp"
             android:textColor="@android:color/holo_green_dark"
+            android:textSize="14sp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintStart_toStartOf="@id/usuarioIMC"
             app:layout_constraintTop_toBottomOf="@id/usuarioIMC"
-            app:layout_constraintEnd_toEndOf="@id/usuarioIMC"/>
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/buttonEditar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Editar"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="@id/usuarioClassificacao"
+            app:layout_constraintEnd_toStartOf="@id/buttonDeletar"
+            app:layout_constraintTop_toBottomOf="@id/usuarioClassificacao" />
+
+        <Button
+            android:id="@+id/buttonDeletar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Deletar"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_red_dark"
+            app:layout_constraintStart_toEndOf="@id/buttonEditar"
+            app:layout_constraintEnd_toEndOf="@id/usuarioClassificacao"
+            app:layout_constraintTop_toTopOf="@id/buttonEditar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

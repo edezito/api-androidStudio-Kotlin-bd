@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="br.com.estudos.ap1">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +29,16 @@
 
         <activity
             android:name=".CalcularIMCActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ListaUsuariosActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.estudos.ap1.ListaUsuariosActivity" />
+        </activity>
+
+        <activity
+            android:name=".EditarUsuarioActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:parentActivityName=".ListaUsuariosActivity">

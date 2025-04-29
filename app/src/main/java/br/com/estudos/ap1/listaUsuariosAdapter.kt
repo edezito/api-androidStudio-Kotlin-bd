@@ -11,7 +11,9 @@ import java.math.BigDecimal
 
 class UsuarioAdapter(
     private val context: Context,
-    private var usuarioIMCS: List<UsuarioIMC>  // Tornar 'usuarios' mutável
+    private var usuarioIMCS: MutableList<UsuarioIMC>,  // A lista agora é mutável
+    private val onEditarClick: (UsuarioIMC) -> Unit,
+    private val onDeletarClick: (UsuarioIMC) -> Unit
 ) : RecyclerView.Adapter<UsuarioAdapter.UsuarioViewHolder>() {
 
     inner class UsuarioViewHolder(private val binding: UsuarioImcBinding) :
@@ -23,9 +25,20 @@ class UsuarioAdapter(
             binding.usuarioPeso.text = "Peso: ${usuarioIMC.peso} kg"
             binding.usuarioIMC.text = "IMC: ${usuarioIMC.imc.setScale(2)}"
             binding.usuarioClassificacao.text = "Classificação: ${classificarIMC(usuarioIMC.imc)}"
-            binding.imageView.load(usuarioIMC.img){
+
+            // Carrega a imagem, com fallback e erro definidos
+            binding.imageView.load(usuarioIMC.img) {
                 fallback(R.drawable.erro)
                 error(R.drawable.erro)
+            }
+
+            // Configura os botões de ação
+            binding.buttonEditar.setOnClickListener {
+                onEditarClick(usuarioIMC)  // Chama a função de editar
+            }
+
+            binding.buttonDeletar.setOnClickListener {
+                onDeletarClick(usuarioIMC)  // Chama a função de deletar
             }
         }
 
@@ -41,6 +54,7 @@ class UsuarioAdapter(
         }
     }
 
+    // Cria o ViewHolder e infla o layout
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsuarioViewHolder {
         val binding = UsuarioImcBinding.inflate(
             LayoutInflater.from(context),
@@ -50,15 +64,18 @@ class UsuarioAdapter(
         return UsuarioViewHolder(binding)
     }
 
+    // Vincula os dados do usuário ao item da lista
     override fun onBindViewHolder(holder: UsuarioViewHolder, position: Int) {
         holder.vincula(usuarioIMCS[position])
     }
 
+    // Retorna o número total de itens na lista
     override fun getItemCount() = usuarioIMCS.size
 
-    // Função para atualizar a lista de usuários
+    // Função para atualizar a lista de usuários no adapter
     fun atualizarUsuario(novaLista: List<UsuarioIMC>) {
-        usuarioIMCS = novaLista
-        notifyDataSetChanged()  // Notifica que os dados foram atualizados
+        usuarioIMCS.clear()  // Limpa a lista antiga
+        usuarioIMCS.addAll(novaLista)  // Adiciona todos os novos itens
+        notifyDataSetChanged()  // Notifica o RecyclerView de que os dados mudaram
     }
 }
