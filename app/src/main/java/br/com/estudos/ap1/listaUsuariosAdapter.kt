@@ -2,63 +2,77 @@ package br.com.estudos.ap1
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.estudos.ap1.databinding.UsuarioImcBinding
 import br.com.estudos.ap1.model.UsuarioIMC
 import coil.load
-import java.math.BigDecimal
 
-class UsuarioAdapter(
+class ListaUsuariosAdapter(
     private val context: Context,
-    private var usuarioIMCS: List<UsuarioIMC>  // Tornar 'usuarios' mutável
-) : RecyclerView.Adapter<UsuarioAdapter.UsuarioViewHolder>() {
+    imc: List<UsuarioIMC>,
+    var quandoClicaNoItem: (usuario: UsuarioIMC) -> Unit = {}
+) : RecyclerView.Adapter<ListaUsuariosAdapter.ViewHolder>() {
 
-    inner class UsuarioViewHolder(private val binding: UsuarioImcBinding) :
+    private val imc = imc.toMutableList()
+
+    inner class ViewHolder(private val binding: UsuarioImcBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private lateinit var usuarioIMC: UsuarioIMC
+
+        init {
+            itemView.setOnClickListener {
+                if (::usuarioIMC.isInitialized) {
+                    quandoClicaNoItem(usuarioIMC)
+                }
+            }
+        }
+
         fun vincula(usuarioIMC: UsuarioIMC) {
+            this.usuarioIMC = usuarioIMC
             binding.usuarioName.text = usuarioIMC.nome
-            binding.usuarioAltura.text = "Altura: ${usuarioIMC.altura} m"
-            binding.usuarioPeso.text = "Peso: ${usuarioIMC.peso} kg"
-            binding.usuarioIMC.text = "IMC: ${usuarioIMC.imc.setScale(2)}"
-            binding.usuarioClassificacao.text = "Classificação: ${classificarIMC(usuarioIMC.imc)}"
-            binding.imageView.load(usuarioIMC.img){
-                fallback(R.drawable.erro)
-                error(R.drawable.erro)
+            binding.usuarioAltura.text = usuarioIMC.altura.toString()
+            binding.usuarioPeso.text = usuarioIMC.peso.toString()
+
+            // Verificar a visibilidade da imagem
+            val visibilidade = if (!usuarioIMC.imagem.isNullOrEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            binding.imageView.visibility = visibilidade
+
+            // Carregar a imagem com Coil
+            usuarioIMC.imagem?.let { imagemUrl ->
+                binding.imageView.load(imagemUrl) {
+                    crossfade(true)
+                    placeholder(R.drawable.imagem_padrao) // Coloca uma imagem padrão enquanto carrega
+                    error(R.drawable.erro) // Caso a imagem não seja carregada
+                }
             }
         }
-
-        private fun classificarIMC(imc: BigDecimal): String {
-            return when {
-                imc < BigDecimal("18.5") -> "Abaixo do peso"
-                imc < BigDecimal("25") -> "Peso normal"
-                imc < BigDecimal("30") -> "Sobrepeso"
-                imc < BigDecimal("35") -> "Obesidade Grau I"
-                imc < BigDecimal("40") -> "Obesidade Grau II"
-                else -> "Obesidade Grau III"
-            }
-        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsuarioViewHolder {
-        val binding = UsuarioImcBinding.inflate(
-            LayoutInflater.from(context),
-            parent,
-            false
-        )
-        return UsuarioViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(context)
+        val binding = UsuarioImcBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: UsuarioViewHolder, position: Int) {
-        holder.vincula(usuarioIMCS[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val imc = imc[position]
+        holder.vincula(imc)
     }
 
-    override fun getItemCount() = usuarioIMCS.size
+    override fun getItemCount(): Int = imc.size
 
-    // Função para atualizar a lista de usuários
-    fun atualizarUsuario(novaLista: List<UsuarioIMC>) {
-        usuarioIMCS = novaLista
-        notifyDataSetChanged()  // Notifica que os dados foram atualizados
+    fun atualiza(imc: List<UsuarioIMC>) {
+        this.imc.clear()
+        this.imc.addAll(imc)
+        notifyDataSetChanged()
+
     }
 }

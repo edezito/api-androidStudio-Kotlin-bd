@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="primary_blue">#3A73D9</color>
-    <color name="secondary_blue">#1E4DB7</color>
-    <color name="background_blue">#E6F0FF</color>
-    <color name="accent_blue">#90C2FF</color>
-    <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#D1E3FF</color>
+    <color name="black">#121212</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="primary_blue">#0077B6</color>
+    <color name="secondary_blue">#0096C7</color>
+    <color name="accent_blue">#00B4D8</color>
+
+    <color name="background_blue">#F0F7FF</color>
+
+    <color name="text_primary">#1A1A1A</color>
+    <color name="text_secondary">#7D8D9C</color>
 </resources>

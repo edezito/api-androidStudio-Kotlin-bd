@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- TextView para mostrar quando a lista estiver vazia -->
     <TextView
         android:id="@+id/textViewListaVazia"
         android:layout_width="wrap_content"
@@ -19,6 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible" />
 
+    <!-- RecyclerView para exibir a lista de usuários -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUsuarios"
         android:layout_width="0dp"
@@ -32,6 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/fabAdicionarUsuario" />
 
+    <!-- FloatingActionButton para adicionar novo usuário -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdicionarUsuario"
         android:layout_width="wrap_content"

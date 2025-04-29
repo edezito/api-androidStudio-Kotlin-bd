@@ -3,15 +3,19 @@ package br.com.estudos.ap1
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.estudos.ap1.dao.UsuariosIMCDao
+import androidx.room.Room
 import br.com.estudos.ap1.databinding.ActivityListaUsuarioBinding
-import br.com.estudos.ap1.model.UsuarioIMC
+import br.com.estudos.ap1.model.AppDatabase
+import kotlinx.coroutines.launch
 
 class ListaUsuariosActivity : AppCompatActivity() {
 
-    private val dao = UsuariosIMCDao()
-    private lateinit var adapter: UsuarioAdapter
+    private lateinit var db: AppDatabase
+    private val adapter by lazy {
+        ListaUsuariosAdapter(context = this, imc = emptyList())
+    }
     private val binding by lazy {
         ActivityListaUsuarioBinding.inflate(layoutInflater)
     }
@@ -20,35 +24,43 @@ class ListaUsuariosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val nome = intent.getStringExtra("nome")
-        val altura = intent.getStringExtra("altura")?.toBigDecimalOrNull()
-        val peso = intent.getStringExtra("peso")?.toBigDecimalOrNull()
-        val imc = intent.getStringExtra("imc")?.toBigDecimalOrNull()
-
-        if (nome != null && altura != null && peso != null && imc != null) {
-            val usuarioIMC = UsuarioIMC(nome, altura, peso, imc)
-            dao.salvar(usuarioIMC)  // Salva no DAO
-        }
-
-        adapter = UsuarioAdapter(context = this, usuarioIMCS = dao.buscaTodos())
         configuraRecyclerView()
+        configuraFab()
 
-        binding.fabAdicionarUsuario.setOnClickListener {
-            val intent = Intent(this, CalcularIMCActivity::class.java)
-            startActivity(intent)
-        }
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "app_database"
+        ).build()
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.atualizarUsuario(dao.buscaTodos())
+        atualizaLista()
     }
 
-    private fun configuraRecyclerView() {
-        binding.recyclerViewUsuarios.apply {
-            adapter = this@ListaUsuariosActivity.adapter
-            layoutManager = LinearLayoutManager(this@ListaUsuariosActivity)
+    private fun atualizaLista() {
+        lifecycleScope.launch {
+            val usuarios = db.usuariosDao().buscaTodos()
+            adapter.atualiza(usuarios)
         }
     }
 
+    private fun configuraFab() {
+        val fab = binding.fabAdicionarUsuario
+        fab.setOnClickListener {
+            formIMC()
+        }
+    }
+
+    private fun formIMC() {
+        val intent = Intent(this, CalcularIMCActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun configuraRecyclerView() {
+        val recyclerView = binding.recyclerViewUsuarios
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+    }
 }

@@ -16,6 +16,7 @@
         tools:targetApi="34"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <!-- Activity principal -->
         <activity
             android:name=".ListaUsuariosActivity"
             android:exported="true"
@@ -27,6 +28,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Activity para calcular IMC -->
         <activity
             android:name=".CalcularIMCActivity"
             android:exported="true"
@@ -36,7 +38,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.estudos.ap1.ListaUsuariosActivity" />
         </activity>
-
     </application>
 
 </manifest>

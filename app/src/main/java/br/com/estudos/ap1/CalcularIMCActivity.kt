@@ -1,79 +1,94 @@
 package br.com.estudos.ap1
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import br.com.estudos.ap1.dao.UsuariosIMCDao
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
 import br.com.estudos.ap1.databinding.ActivityCalcularImcBinding
-import br.com.estudos.ap1.databinding.ImagemBinding
+import br.com.estudos.ap1.model.AppDatabase
 import br.com.estudos.ap1.model.UsuarioIMC
 import coil.load
+import imagemDialog
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 class CalcularIMCActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityCalcularImcBinding
-    private val dao = UsuariosIMCDao()
+    private val binding by lazy {
+        ActivityCalcularImcBinding.inflate(layoutInflater)
+    }
     private var url: String? = null
+
+    // Banco de dados
+    private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCalcularImcBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
-        title = "Calcular IMC"
+        title = "Cadastrar usuário"
+
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "app_database"
+        ).build()
+
         configurarBotaoCalcular()
-        binding.imagemForm.setOnClickListener{
-            val bindingImagem = ImagemBinding.inflate(layoutInflater)
-            bindingImagem.btnImagem.setOnClickListener{
-                val url = bindingImagem.imagemFormOutput.text.toString()
-                bindingImagem.imagemForm.load(url)
-            }
-            AlertDialog.Builder(this)
-                .setView(bindingImagem.root)
-                .setPositiveButton("Confirmar") {_, _ ->
-                    url = bindingImagem.imagemFormOutput.text.toString()
-                    binding.imagemForm.load(url)
+
+        binding.imagemForm.setOnClickListener {
+            imagemDialog(this)
+                .mostra(url) { imagem ->
+                    url = imagem
+                    binding.imagemForm.load(imagem) // Carrega a imagem
                 }
-                .setNegativeButton("Cancelar") {_, _ ->}
-                .show()
         }
     }
 
     private fun configurarBotaoCalcular() {
-        binding.btnCalcular.setOnClickListener {
-            calcularIMC()
+        val botaoSalvar = binding.btnCalcular
+
+        botaoSalvar.setOnClickListener {
+            val usuarioNovo = criaUsuario()
+
+            if (usuarioNovo.nome.isNotBlank()) {
+                lifecycleScope.launch {
+                    db.usuariosDao().salvar(usuarioNovo)
+                    finish() // Fecha a tela após salvar
+                }
+            } else {
+                Toast.makeText(this, "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun calcularIMC() {
-        val nome = binding.editarname.text.toString()
-        val alturaStr = binding.editAltura.text.toString()
-        val pesoStr = binding.editPeso.text.toString()
+    private fun criaUsuario(): UsuarioIMC {
+        val nome = binding.editarname.text.toString().trim()
+        val alturaStr = binding.editAltura.text.toString().trim()
+        val pesoStr = binding.editPeso.text.toString().trim()
 
+        // Validação dos campos
         if (!validarCampos(nome, alturaStr, pesoStr)) {
-            Toast.makeText(this, "Preencha todos os campos corretamente!", Toast.LENGTH_SHORT)
-                .show()
-            return
+            return UsuarioIMC(
+                id = 0L,
+                nome = "",
+                altura = BigDecimal.ZERO,
+                peso = BigDecimal.ZERO,
+                imc = BigDecimal.ZERO,
+                imagem = null
+            )
         }
 
-        try {
-            val imc = calcularIMC(alturaStr, pesoStr)
-            val usuarioIMC = UsuarioIMC(
-                nome,
-                alturaStr.toBigDecimal(),
-                pesoStr.toBigDecimal(),
-                imc
-            ) // Agora passa o IMC corretamente
-            dao.salvar(usuarioIMC) // Salva o usuário na lista
-            vaiParaListaUsuarios(usuarioIMC)
-        } catch (e: NumberFormatException) {
-            Toast.makeText(this, "Valores inválidos! Insira números corretos.", Toast.LENGTH_SHORT)
-                .show()
-        }
+        val imc = calcularIMC(alturaStr, pesoStr)
+        return UsuarioIMC(
+            id = 0L, // o Room vai gerar o ID automaticamente se você configurar ele assim
+            nome = nome,
+            altura = alturaStr.toBigDecimal(),
+            peso = pesoStr.toBigDecimal(),
+            imc = imc,
+            imagem = url
+        )
     }
 
     private fun validarCampos(nome: String, altura: String, peso: String): Boolean {
@@ -89,16 +104,5 @@ class CalcularIMCActivity : AppCompatActivity() {
         }
 
         return peso.divide(altura.pow(2), 2, RoundingMode.HALF_UP)
-    }
-
-    private fun vaiParaListaUsuarios(usuarioIMC: UsuarioIMC) {
-        val intent = Intent(this, ListaUsuariosActivity::class.java).apply {
-            putExtra("nome", usuarioIMC.nome)
-            putExtra("altura", usuarioIMC.altura.toString())
-            putExtra("peso", usuarioIMC.peso.toString())
-            putExtra("imc", usuarioIMC.imc.toString())
-            intent.putExtra("imagem", url)
-        }
-        startActivity(intent)
     }
 }
